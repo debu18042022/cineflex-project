@@ -1,0 +1,22 @@
+{
+  "name": "node.js-with-express",
+  "version": "1.0.0",
+  "description": "Learning express.js with node",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/debu18042022/node.js_with_express-.git"
+  },
+  "author": "Sujeet Sahu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/debu18042022/node.js_with_express-/issues"
+  },
+  "homepage": "https://github.com/debu18042022/node.js_with_express-#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
