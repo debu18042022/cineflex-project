@@ -1,10 +1,18 @@
 // In this app.js we are going to keep all the configuration related to express.js
 const express = require("express"); // returns a function
-const app = express(); // returns an object
+const fs = require("fs");
 
-//ROUTE =Http Method + URL
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "Hello World", status: 200 });
+const app = express(); // returns an object
+const movies = JSON.parse(fs.readFileSync("./data/movies.json"));
+// GET - api/movies
+app.get("/api/v1/movies", (req, res) => {
+  res.status(200).json({
+    staus: "success",
+    count: movies.length,
+    data: {
+      movies: movies,
+    },
+  });
 });
 
 //Create a server
