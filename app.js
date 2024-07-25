@@ -56,11 +56,11 @@ app.patch("/api/v1/movies/:id", (req, res) => {
   const contentToUpdate = req.body; // returns an object
   const id = req.params.id * 1;
   const movieToUpdate = movies.find((movie) => movie.id === id);
-  if(!movieToUpdate){
+  if (!movieToUpdate) {
     return res.status(404).json({
-      status:"fail",
+      status: "fail",
       message: `Movie with id ${id} is not found`,
-    })
+    });
   }
   const index = movies.indexOf(movieToUpdate);
   Object.assign(movieToUpdate, contentToUpdate);
@@ -70,6 +70,28 @@ app.patch("/api/v1/movies/:id", (req, res) => {
       status: "success",
       data: {
         movie: movieToUpdate,
+      },
+    });
+  });
+});
+
+// DELETE - /api/v1/movies/id
+app.delete("/api/v1/movies/:id", (req, res) => {
+  const id = +req.params.id;
+  const movieToDelete = movies.find((movie) => movie.id === id);
+  if (!movieToDelete) {
+    return res.status(404).json({
+      status: "fail",
+      message: `Movie with id ${id} is not found to delete`,
+    });
+  }
+  const index = movies.indexOf(movieToDelete);
+  movies.splice(index, 1);
+  fs.writeFile("./data/movies.json", JSON.stringify(movies), () => {
+    res.status(204).json({
+      status: "success",
+      data: {
+        movie: null,
       },
     });
   });
