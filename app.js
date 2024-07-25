@@ -17,7 +17,7 @@ app.get("/api/v1/movies", (req, res) => {
   });
 });
 
-// GET - api/v1/movies/id => here id is a parameter.
+// GET - api/v1/movies/id => here id is a parameter. there can be a multiple routes also like /api/v1/movies/id/name/x => /api/v1/movies/:id:name:x
 app.get("/api/v1/movies/:id", (req, res) => {
   //Convert id to Number type as req.params gives an object of property and that property value is always a string.
   const id = req.params.id * 1;
@@ -35,7 +35,7 @@ app.get("/api/v1/movies/:id", (req, res) => {
   });
 });
 
-// POST - api/v1/movies
+// POST - api/v1/movies there can be a multiple routes also like 
 app.post("/api/v1/movies", (req, res) => {
   // console.log(req.body); To get the content of body we use express.json() middleware
   const newId = movies[movies.length - 1].id + 1;
