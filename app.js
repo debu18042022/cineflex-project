@@ -6,8 +6,9 @@ const app = express(); // returns an object
 /**express.json() is a middleware we are using here because in NODE JS by default we do not get the content of body in request object */
 app.use(express.json());
 const movies = JSON.parse(fs.readFileSync("./data/movies.json"));
-// GET - api/v1/movies
-app.get("/api/v1/movies", (req, res) => {
+
+//ROUTE HANDLER FUNCTIONS
+const getAllMovies = (req, res) => {
   res.status(200).json({
     staus: "success",
     count: movies.length,
@@ -15,10 +16,9 @@ app.get("/api/v1/movies", (req, res) => {
       movies: movies,
     },
   });
-});
+};
 
-// GET - api/v1/movies/id => here id is a parameter. there can be a multiple routes also like /api/v1/movies/id/name/x => /api/v1/movies/:id:name:x
-app.get("/api/v1/movies/:id", (req, res) => {
+const getMovie = (req, res) => {
   //Convert id to Number type as req.params gives an object of property and that property value is always a string.
   const id = req.params.id * 1;
   const movie = movies.find((movie) => movie.id === id); // return undefined if no value will match
@@ -33,10 +33,9 @@ app.get("/api/v1/movies/:id", (req, res) => {
       movie: movie,
     },
   });
-});
+};
 
-// POST - api/v1/movies there can be a multiple routes also like
-app.post("/api/v1/movies", (req, res) => {
+const createMovie = (req, res) => {
   // console.log(req.body); To get the content of body we use express.json() middleware
   const newId = movies[movies.length - 1].id + 1;
   let newMovie = Object.assign({ id: newId }, req.body);
@@ -49,10 +48,9 @@ app.post("/api/v1/movies", (req, res) => {
       },
     });
   });
-});
+};
 
-// PATCH - "/api/v1/movies/id";
-app.patch("/api/v1/movies/:id", (req, res) => {
+const updateMovie = (req, res) => {
   const contentToUpdate = req.body; // returns an object
   const id = req.params.id * 1;
   const movieToUpdate = movies.find((movie) => movie.id === id);
@@ -73,10 +71,9 @@ app.patch("/api/v1/movies/:id", (req, res) => {
       },
     });
   });
-});
+};
 
-// DELETE - /api/v1/movies/id
-app.delete("/api/v1/movies/:id", (req, res) => {
+const deleteMovie = (req, res) => {
   const id = +req.params.id;
   const movieToDelete = movies.find((movie) => movie.id === id);
   if (!movieToDelete) {
@@ -95,7 +92,31 @@ app.delete("/api/v1/movies/:id", (req, res) => {
       },
     });
   });
-});
+};
+
+// // GET - api/v1/movies
+// app.get("/api/v1/movies", getAllMovies);
+
+// // GET - api/v1/movies/id => here id is a parameter. there can be a multiple routes also like /api/v1/movies/id/name/x => /api/v1/movies/:id:name:x
+// app.get("/api/v1/movies/:id", getMovie);
+
+// // POST - api/v1/movies there can be a multiple routes also like
+// app.post("/api/v1/movies", createMovie);
+
+// // PATCH - "/api/v1/movies/id";
+// app.patch("/api/v1/movies/:id", updateMovie);
+
+// // DELETE - /api/v1/movies/id
+// app.delete("/api/v1/movies/:id", deleteMovie);
+
+app.route("/api/v1/movies")
+  .get(getAllMovies)
+  .post(createMovie);
+
+app.route("/api/v1/movies/:id")
+  .get(getMovie)
+  .patch(updateMovie)
+  .delete(deleteMovie);
 
 //Create a server
 const port = 3000;
