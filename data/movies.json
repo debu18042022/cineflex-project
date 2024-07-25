@@ -1,5 +1,7 @@
 [
-  { "id": "1", "name": "swadesh", "releaseYear": 2004, "duration": "90" },
-  { "id": "2", "name": "Om Shanti Om", "releaseYear": 2007, "duration": "80" },
-  { "id": "3", "name": "Main Hoon Na", "releaseYear": 2004, "duration": "120" }
+  { "id": 1, "name": "swadesh", "releaseYear": 2004, "duration": "90" },
+  { "id": 2, "name": "Om Shanti Om", "releaseYear": 2007, "duration": "80" },
+  { "id": 3, "name": "Main Hoon Na", "releaseYear": 2004, "duration": "120" },
+  { "id": 4, "name": "test", "releaseYear": 2024, "duration": 120 },
+  { "id": 5, "name": "test1", "releaseYear": 2022, "duration": 110 }
 ]
