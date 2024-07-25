@@ -17,12 +17,29 @@ app.get("/api/v1/movies", (req, res) => {
   });
 });
 
+// GET - api/v1/movies/id => here id is a parameter.
+app.get("/api/v1/movies/:id", (req, res) => {
+  //Convert id to Number type as req.params gives an object of property and that property value is always a string.
+  const id = req.params.id * 1;
+  const movie = movies.find((movie) => movie.id === id); // return undefined if no value will match
+  if (!movie)
+    return res.status(404).json({
+      status: "fail",
+      message: `Movie with id ${id} is not found`,
+    });
+  res.status(200).json({
+    status: "success",
+    data: {
+      movie: movie,
+    },
+  });
+});
+
 // POST - api/v1/movies
 app.post("/api/v1/movies", (req, res) => {
   // console.log(req.body); To get the content of body we use express.json() middleware
-  const newId = Number(movies[movies.length - 1].id) + 1;
+  const newId = movies[movies.length - 1].id + 1;
   let newMovie = Object.assign({ id: newId }, req.body);
-  console.log(newMovie);
   movies.push(newMovie);
   fs.writeFile("./data/movies.json", JSON.stringify(movies), () => {
     res.status(201).json({
