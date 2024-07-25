@@ -35,7 +35,7 @@ app.get("/api/v1/movies/:id", (req, res) => {
   });
 });
 
-// POST - api/v1/movies there can be a multiple routes also like 
+// POST - api/v1/movies there can be a multiple routes also like
 app.post("/api/v1/movies", (req, res) => {
   // console.log(req.body); To get the content of body we use express.json() middleware
   const newId = movies[movies.length - 1].id + 1;
@@ -46,6 +46,30 @@ app.post("/api/v1/movies", (req, res) => {
       status: "success",
       data: {
         movie: newMovie,
+      },
+    });
+  });
+});
+
+// PATCH - "/api/v1/movies/id";
+app.patch("/api/v1/movies/:id", (req, res) => {
+  const contentToUpdate = req.body; // returns an object
+  const id = req.params.id * 1;
+  const movieToUpdate = movies.find((movie) => movie.id === id);
+  if(!movieToUpdate){
+    return res.status(404).json({
+      status:"fail",
+      message: `Movie with id ${id} is not found`,
+    })
+  }
+  const index = movies.indexOf(movieToUpdate);
+  Object.assign(movieToUpdate, contentToUpdate);
+  movies[index] = movieToUpdate;
+  fs.writeFile("./data/movies.json", JSON.stringify(movies), () => {
+    res.status(200).json({
+      status: "success",
+      data: {
+        movie: movieToUpdate,
       },
     });
   });
