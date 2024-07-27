@@ -1,7 +1,7 @@
 // In this app.js we are going to keep all the configuration related to express.js
 const express = require("express"); // returns a function
 const fs = require("fs");
-const morgan = require('morgan')  // HTTP request logger middleware for node.js
+const morgan = require("morgan"); // HTTP request logger middleware for node.js
 
 const app = express(); // returns an object
 /**creating custom middleware */
@@ -11,7 +11,7 @@ const logger = (req, res, next) => {
 };
 /**express.json() is a middleware we are using here because in NODE JS by default we do not get the content of body in request object */
 app.use(express.json()); // in morgan dev is a format i.e there are 5 fomats dev,tiny,combined,common,sort.
-app.use(morgan('')); // we are calling this morgan and express.json function because it is not a middleware in itself rather it returns a middleware and logger is in itself middleware that's why we have not called here we just passed logger
+app.use(morgan("")); // we are calling this morgan and express.json function because it is not a middleware in itself rather it returns a middleware and logger is in itself middleware that's why we have not called here we just passed logger
 app.use(logger); // calling custom middleware by the help of use() method i.e. app.use(Custom Middleware func)
 app.use((req, res, next) => {
   req["requestedAt"] = new Date().toISOString();
@@ -122,13 +122,13 @@ const deleteMovie = (req, res) => {
 // // DELETE - /api/v1/movies/id
 // app.delete("/api/v1/movies/:id", deleteMovie);
 
-app.route("/api/v1/movies").get(getAllMovies).post(createMovie);
+const moviesRouter = express.Router(); // it returns a middleware
 
-app
-  .route("/api/v1/movies/:id")
-  .get(getMovie)
-  .patch(updateMovie)
-  .delete(deleteMovie);
+moviesRouter.route("/").get(getAllMovies).post(createMovie);
+moviesRouter.route("/:id").get(getMovie).patch(updateMovie).delete(deleteMovie);
+
+/**MOUNTING ROUTES */
+app.use("/api/v1/movies",moviesRouter); // here we are mounting movieRouter middleware on /api/v1/movies path or this is also called as MOUNTING ROUTES. Here use() method has another overloaded version where the first arg should be a path and second argument be a middleware.
 
 //Create a server
 const port = 3000;
