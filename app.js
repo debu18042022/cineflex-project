@@ -9,6 +9,7 @@ const logger = (req, res, next) => {
   console.log("Custom middleware called");
   next();
 };
+
 /**express.json() is a middleware we are using here because in NODE JS by default we do not get the content of body in request object */
 app.use(express.json()); // in morgan we passed dev as an argument for the format i.e there are 5 fomats dev,tiny,combined,common,sort.
 app.use(morgan("dev")); // we are calling this morgan and express.json function because it is not a middleware in itself rather it returns a middleware and logger is in itself middleware that's why we have not called here we just passed logger
