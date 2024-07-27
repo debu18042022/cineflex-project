@@ -1,21 +1,31 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const movies = JSON.parse(fs.readFileSync("./data/movies.json"));
 
 /**checkId is a param middleware => param middleware only runs for certain routes or endpoint or param*/
-exports.checkId = (req,res,next,value) => {
+exports.checkId = (req, res, next, value) => {
   const id = value * 1;
   //FIND MOVIE BASED ON ID PARAMETER
   const movie = movies.find((movie) => movie.id === id); // return undefined if no value will match
-  
+
   if (!movie)
     return res.status(404).json({
       status: "fail",
       message: `Movie with id ${id} is not found`,
     });
 
-    next();
-}
+  next();
+};
+
+exports.validateBody = (req, res, next) => {
+  if (!req.body.name || !req.body.releaseYear) { // checking user entered a valid movie data or not here name and releaseYear is mandatory
+    return res.status(400).json({
+      staus: "fail",
+      message: "Not a valid movie data",
+    });
+  }
+  next();
+};
 //ROUTE HANDLER FUNCTIONS
 exports.getAllMovies = (req, res) => {
   res.status(200).json({
