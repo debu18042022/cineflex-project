@@ -3,14 +3,26 @@ const express = require("express"); // returns a function
 const fs = require("fs");
 
 const app = express(); // returns an object
+/**creating custom middleware */
+const logger = (req, res, next) => {
+  //
+  console.log("Custom middleware called");
+  next();
+};
 /**express.json() is a middleware we are using here because in NODE JS by default we do not get the content of body in request object */
 app.use(express.json());
+app.use(logger); // calling custom middleware by the help of use() method i.e. app.use(Custom Middleware func)
+app.use((req, res, next) => {
+  req["requestedAt"] = new Date().toISOString();
+  next();
+});
 const movies = JSON.parse(fs.readFileSync("./data/movies.json"));
 
 //ROUTE HANDLER FUNCTIONS
 const getAllMovies = (req, res) => {
   res.status(200).json({
     staus: "success",
+    requestedAt: req.requestedAt,
     count: movies.length,
     data: {
       movies: movies,
@@ -109,11 +121,10 @@ const deleteMovie = (req, res) => {
 // // DELETE - /api/v1/movies/id
 // app.delete("/api/v1/movies/:id", deleteMovie);
 
-app.route("/api/v1/movies")
-  .get(getAllMovies)
-  .post(createMovie);
+app.route("/api/v1/movies").get(getAllMovies).post(createMovie);
 
-app.route("/api/v1/movies/:id")
+app
+  .route("/api/v1/movies/:id")
   .get(getMovie)
   .patch(updateMovie)
   .delete(deleteMovie);
