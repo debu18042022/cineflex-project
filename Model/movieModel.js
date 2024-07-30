@@ -4,13 +4,13 @@ const mongoose = require("mongoose");
 const movieSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Name is required field!"],
     unique: true,
   },
   description: String,
   duration: {
     type: Number,
-    required: true,
+    required: [true, "Duration is required field!"],
   },
   ratings: {
     type: Number,
