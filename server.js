@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-
+const mongoose = require("mongoose");
 dotenv.config({ path: "./config.env" });
 const app = require("./app");
 
@@ -10,6 +10,19 @@ const app = require("./app");
 // Use $env:NODE_ENV = "development" in PowerShellby this  code we can set the environment variable through the terminal.
 console.log("NODE_ENV:", process.env.NODE_ENV);
 console.log(process.env);
+
+/**CCONNECTION WITH DATABASE : first argument should be a CONN_STR*/
+mongoose
+  .connect(process.env.CONN_STR, {
+    useNewUrlParser: true,
+  })
+  .then((conn) => {
+    console.log(conn);
+    console.log("DB CONNECTION SUCCESSFUL");
+  })
+  .catch((err) => {
+    console.log("Some Error Has Occured");
+  });
 
 //Create a server
 const port = process.env.PORT || 3000;
