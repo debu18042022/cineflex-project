@@ -8,8 +8,8 @@ const app = require("./app");
 //A - Just because earlier we have learned that we are going to use this app.js for express related thing.Now environment variable is not something related to express it something related to Node Js. So everything which is related to application but not related to Express Js that we will write the servrer.js file.
 // Use SET NODE_ENV=DEVELOPMENT in Command Prompt (cmd.exe).
 // Use $env:NODE_ENV = "development" in PowerShellby this  code we can set the environment variable through the terminal.
-console.log("NODE_ENV:", process.env.NODE_ENV);
-console.log(process.env);
+// console.log("NODE_ENV:", process.env.NODE_ENV);
+// console.log(process.env);
 
 /**CCONNECTION WITH DATABASE : first argument should be a CONN_STR*/
 mongoose
@@ -17,7 +17,7 @@ mongoose
     useNewUrlParser: true,
   })
   .then((conn) => {
-    console.log(conn);
+    // console.log(conn);
     console.log("DB CONNECTION SUCCESSFUL");
   })
   .catch((err) => {
