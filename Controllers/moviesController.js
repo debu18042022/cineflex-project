@@ -2,13 +2,20 @@ const Movie = require("./../Model/movieModel");
 
 //ROUTE HANDLER FUNCTIONS
 exports.getAllMovies = async (req, res) => {
-  console.log(req.query);
   try {
-    const movies = await Movie.find(req.query);
+    // console.log(req.query);
+    let queryStr = JSON.stringify(req.query);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    const queryObj = JSON.parse(queryStr);
 
+    
+
+    // const movies = await Movie.find({"duration":{$gte:90},"ratings":{$gte:7},"price":{$lte:100}});
     // const movies = await Movie.find({duration: +req.query.duration,ratings: +req.query.ratings});
-    // const movies = await Movie.find().where("duration").equals(req.query.duration).where("ratings").equals(req.query.ratings);
+    // const movies1 = (await Movie.find().where("duration").gte(req.query.duration).where("ratings").gte(req.query.ratings).where("price")).filter(100);
 
+    const movies = await Movie.find(queryObj);
+    
     res.status(200).json({
       status: "success",
       length: movies.length,
